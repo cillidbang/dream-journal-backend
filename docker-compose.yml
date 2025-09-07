@@ -1,6 +1,7 @@
 
 services:
   backend:
+    ## Setze Context für dockerfile.jvm
     build:
       context: .
       dockerfile: src/main/docker/Dockerfile.jvm

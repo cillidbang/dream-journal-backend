@@ -1,10 +1,12 @@
-FROM eclipse-temurin:17-jdk as build
-WORKDIR /work
+## Baseimage for the Build-Stage
+FROM openjdk:17
+
+## Conterxt wurder im der Composefile auf rootfolder gesetzt.
+## Kopiere alles in den Container
 COPY . /work/
 
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-COPY --from=build /work/target/quarkus-app/ /app/
+## Set WORKDIR to quarkus-app for the ENTRYPOINT
+WORKDIR /work/target/quarkus-app/
 
-CMD ["java", "-jar", "/app/quarkus-run.jar"]
-EXPOSE 8080
+## SET what happens in ENTRYPOINT
+ENTRYPOINT ["java" ,"-jar", "quarkus-run.jar"]
