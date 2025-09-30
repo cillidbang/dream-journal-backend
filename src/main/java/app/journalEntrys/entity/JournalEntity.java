@@ -13,16 +13,16 @@ public class JournalEntity {
     @Column(name = "id")
     public long id;
 
-    @Column(name = "title")
+    @Column(name = "title", columnDefinition = "varchar(255)")
     public String title;
 
-    @Column(name = "subtitle")
+    @Column(name = "subtitle", columnDefinition = "varchar(255)")
     public String subtitle;
 
-    @Column(name = "date")
+    @Column(name = "date", columnDefinition = "varchar(255)")
     public String date;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     public String content;
 
 
