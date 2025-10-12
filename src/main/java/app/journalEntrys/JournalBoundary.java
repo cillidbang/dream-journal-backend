@@ -1,40 +1,34 @@
 package app.journalEntrys;
-
-
-import app.GenericCRUD;
 import app.journalEntrys.entity.JournalEntity;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.logging.annotations.Param;
+
+import static app.journalEntrys.JournalControl.*;
 
 @Path("/journal")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class JournalBoundary {
 
-
     @Inject
-    GenericCRUD genericCRUD;
+    JournalControl control;
 
     @GET
-    @Path("/getAllJournals")
-    public Response getAllJournals() {
-        return Response.ok(genericCRUD.getAll()).build();
+    public Response allJournals() {
+        return control.getAllJournals();
     }
 
     @POST
-    @Path("/createJournalEntry")
-    public Response createJournal(JournalEntity journalEntity) {
-        genericCRUD.create(journalEntity);
-        return Response.ok(journalEntity).build();
+    public Response createJournalEntry(JournalEntity journalEntity) {
+        return control.createEntry(journalEntity);
     }
 
     @DELETE
-    @Path("/delete/{id}")
-    public Response createJournal(@PathParam("id") String id) {
-        genericCRUD.deleteById(Integer.parseInt(id));
-        return Response.ok("JoujournalEntityrnals").build();
+    @Path("/{id}")
+    public Response deleteJournal(@PathParam("id") String id) {
+        return control.deleteEntry(id);
     }
 }

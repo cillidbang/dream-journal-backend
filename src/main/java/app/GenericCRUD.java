@@ -16,7 +16,6 @@ public class GenericCRUD {
     EntityManager em;
 
 
-
     @Transactional
     public List<JournalEntity> getAll() {
         return em.createNativeQuery("SELECT * FROM journalentrysummary", JournalEntity.class)
@@ -38,9 +37,10 @@ public class GenericCRUD {
     }
 
     @Transactional
-    public void deleteById(int id) {
+    public JournalEntity deleteById(int id) {
         JournalEntity entity = em.find(JournalEntity.class, id);
         em.remove(entity);
+        return entity;
     }
 
 }
