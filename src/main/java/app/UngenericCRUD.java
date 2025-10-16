@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 @ApplicationScoped
-public class GenericCRUD {
+public class UngenericCRUD {
 
     @Inject
     EntityManager em;
@@ -27,6 +27,24 @@ public class GenericCRUD {
     public <T> T create(T entity) {
         em.persist(entity);
         return entity;
+    }
+
+    @Transactional
+    public JournalEntity findById(Long id) {
+        return em.find(JournalEntity.class, id);
+    }
+
+    @Transactional
+    public JournalEntity edit(JournalEntity newEntity, Object id) {
+        JournalEntity managed = em.find(JournalEntity.class, id);
+
+        managed.title = newEntity.getTitle();;
+        managed.subtitle = newEntity.getSubtitle();;
+        managed.content = newEntity.getContent();;
+        managed.date = newEntity.getDate();;
+
+        em.merge(managed);
+        return managed;
     }
 
 

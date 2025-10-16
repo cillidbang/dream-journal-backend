@@ -6,8 +6,6 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import static app.journalEntrys.JournalControl.*;
-
 @Path("/journal")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -25,6 +23,9 @@ public class JournalBoundary {
     public Response createJournalEntry(JournalEntity journalEntity) {
         return control.createEntry(journalEntity);
     }
+
+    @PUT
+    public Response changeExistingEntry(JournalEntity journalEntity) { return control.overwriteById(journalEntity);}
 
     @DELETE
     @Path("/{id}")

@@ -71,4 +71,13 @@ public class JournalEntity {
         this.date = date;
         return this;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public JournalEntity setContent(String content) {
+        this.content = content;
+        return this;
+    }
 }
