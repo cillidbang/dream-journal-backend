@@ -5,6 +5,12 @@ import app.journalEntrys.entity.JournalEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -15,13 +21,15 @@ public class UngenericCRUD {
     @Inject
     EntityManager em;
 
-
     @Transactional
-    public List<JournalEntity> getAll() {
-        return em.createNativeQuery("SELECT * FROM journalentrysummary", JournalEntity.class)
-                .getResultList();
+    public <T> List<T> getAll(Class<T> entityClass) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<T> cq = cb.createQuery(entityClass);
+        Root<T> rootEntry = cq.from(entityClass);
+        CriteriaQuery<T> all = cq.select(rootEntry).where();
+        TypedQuery<T> allQuery = em.createQuery(all);
+        return allQuery.getResultList();
     }
-
 
     @Transactional
     public <T> T create(T entity) {
@@ -30,33 +38,25 @@ public class UngenericCRUD {
     }
 
     @Transactional
-    public JournalEntity findById(Long id) {
-        return em.find(JournalEntity.class, id);
+    public <T> T findEntityById(Class<T> entityClass, Long id) {
+        return em.find(entityClass, id);
     }
 
     @Transactional
-    public JournalEntity edit(JournalEntity newEntity, Object id) {
-        JournalEntity managed = em.find(JournalEntity.class, id);
-
-        managed.title = newEntity.getTitle();;
-        managed.subtitle = newEntity.getSubtitle();;
-        managed.content = newEntity.getContent();;
-        managed.date = newEntity.getDate();;
-
-        em.merge(managed);
-        return managed;
+    public <T> T edit(T newEntity) {
+        em.merge(newEntity);
+        return newEntity;
     }
 
 
     @Transactional
-    public <T> T delete(T entity) {
+    public <T> void delete(T entity) {
         em.remove(entity);
-        return entity;
     }
 
     @Transactional
-    public JournalEntity deleteById(int id) {
-        JournalEntity entity = em.find(JournalEntity.class, id);
+    public <T> T deleteById(Class<T> entityClass, Long id) {
+        T entity = em.find(entityClass, id);
         em.remove(entity);
         return entity;
     }

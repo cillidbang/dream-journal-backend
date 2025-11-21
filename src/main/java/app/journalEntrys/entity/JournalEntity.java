@@ -5,13 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table (name = "journalentrysummary")
-public class JournalEntity {
-
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public long id;
+public class JournalEntity extends BaseEntity {
 
     @Column(name = "title", columnDefinition = "varchar(255)")
     public String title;
@@ -27,57 +21,5 @@ public class JournalEntity {
 
 
     public JournalEntity() {
-    }
-
-    public JournalEntity(String title, String subtitle, String date, String content) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.date = date;
-        this.content = content;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public JournalEntity setId(long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public JournalEntity setTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public JournalEntity setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-        return this;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public JournalEntity setDate(String date) {
-        this.date = date;
-        return this;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public JournalEntity setContent(String content) {
-        this.content = content;
-        return this;
     }
 }

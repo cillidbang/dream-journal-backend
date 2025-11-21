@@ -1,0 +1,14 @@
+
+### models
+GET https://api.openai.com/v1/models
+Authorization: Bearer {{ API_TOKEN }}
+
+### response
+POST https://api.openai.com/v1/responses
+Content-Type: application/json
+Authorization: Bearer {{ API_TOKEN }}
+
+{
+  "model": "gpt-5.1",
+  "input": "Luffy from One Piece has the nika fruit. Does he really have the ability to change the reality to his imagination?"
+}

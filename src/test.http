@@ -24,7 +24,7 @@ Content-Type: application/json
 
 
 {
-  "id": 18,
+  "id": 47,
   "title": "changed",
   "subtitle": "changed",
   "date": "2004-08-08",
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8080/journal/10
+DELETE http://localhost:8080/journal/46
 
 
 

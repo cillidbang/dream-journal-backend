@@ -14,22 +14,19 @@ public class JournalControl {
     UngenericCRUD crud;
 
     public Response getAllJournals() {
-        return Response.ok(crud.getAll()).build();
+        return Response.ok(crud.getAll(JournalEntity.class)).build();
     }
-
     public Response createEntry(JournalEntity journalEntity) {
-        crud.create(journalEntity);
-        return Response.ok(journalEntity).build();
+        return Response.ok(crud.create(journalEntity)).build();
     }
 
-    public Response overwriteById(JournalEntity newEntity) {
-        crud.edit(newEntity, newEntity.id);
-        return Response.ok().build();
+    public Response editEntry(JournalEntity newEntity) {
+        return Response.ok(crud.edit(newEntity)).build();
     }
 
     public Response deleteEntry(@PathParam("id") String id) {
-        JournalEntity entity = crud.deleteById(Integer.parseInt(id));
-        return Response.ok(entity).build();
+        JournalEntity deleted = crud.deleteById(JournalEntity.class, Long.parseLong(id));
+        return Response.ok(deleted).build();
     }
 
 }

@@ -1,6 +1,6 @@
 package app.journalEntrys;
-import app.journalEntrys.entity.JournalEntity;
 
+import app.journalEntrys.entity.JournalEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -25,7 +25,9 @@ public class JournalBoundary {
     }
 
     @PUT
-    public Response changeExistingEntry(JournalEntity journalEntity) { return control.overwriteById(journalEntity);}
+    public Response changeExistingEntry(JournalEntity journalEntity) {
+        return control.editEntry(journalEntity);
+    }
 
     @DELETE
     @Path("/{id}")
