@@ -6,6 +6,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.io.IOException;
+
 @Path("/journal")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -20,7 +22,7 @@ public class JournalBoundary {
     }
 
     @POST
-    public Response createJournalEntry(JournalEntity journalEntity) {
+    public Response createJournalEntry(JournalEntity journalEntity) throws IOException {
         return control.createEntry(journalEntity);
     }
 

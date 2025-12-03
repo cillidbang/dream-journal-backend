@@ -8,5 +8,9 @@ COPY . /work/
 ## Set WORKDIR to quarkus-app for the ENTRYPOINT
 WORKDIR /work/target/quarkus-app/
 
+EXPOSE 8080 5005
+
+ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+
 ## SET what happens in ENTRYPOINT
 ENTRYPOINT ["java" ,"-jar", "quarkus-run.jar"]
