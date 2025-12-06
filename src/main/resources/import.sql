@@ -1,4 +1,4 @@
-
+/* import tables */
 CREATE TABLE journalEntrySummary
 (
     id  SERIAL PRIMARY KEY,
