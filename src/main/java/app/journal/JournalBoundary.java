@@ -1,6 +1,5 @@
-package app.journalEntrys;
+package app.journal;
 
-import app.journalEntrys.entity.JournalEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -17,23 +16,21 @@ public class JournalBoundary {
     JournalControl control;
 
     @GET
-    public Response allJournals() {
+    public Response all() {
         return control.getAllJournals();
     }
 
     @POST
-    public Response createJournalEntry(JournalEntity journalEntity) throws IOException {
-        return control.createEntry(journalEntity);
-    }
+    public Response create(JournalEntity journalEntity) throws IOException {return control.createEntry(journalEntity);}
 
     @PUT
-    public Response changeExistingEntry(JournalEntity journalEntity) {
+    public Response edit(JournalEntity journalEntity) {
         return control.editEntry(journalEntity);
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deleteJournal(@PathParam("id") String id) {
+    public Response delete(@PathParam("id") String id) {
         return control.deleteEntry(id);
     }
 }

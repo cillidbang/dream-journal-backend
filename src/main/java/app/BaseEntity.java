@@ -1,4 +1,4 @@
-package app.journalEntrys.entity;
+package app;
 
 
 import jakarta.persistence.*;

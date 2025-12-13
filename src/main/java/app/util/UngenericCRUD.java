@@ -1,11 +1,10 @@
-package app;
+package app.util;
 
 
-import app.journalEntrys.entity.JournalEntity;
+import app.Image.ImageEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -13,6 +12,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -40,6 +40,13 @@ public class UngenericCRUD {
     @Transactional
     public <T> T findEntityById(Class<T> entityClass, Long id) {
         return em.find(entityClass, id);
+    }
+
+    @Transactional
+    public List<ImageEntity> findImageByJournalId(Long id) {
+        return Collections.singletonList((ImageEntity) em.createQuery("SELECT c FROM ImageEntity c WHERE c.journalId = :id")
+                .setParameter("id", id)
+                .getResultList());
     }
 
     @Transactional

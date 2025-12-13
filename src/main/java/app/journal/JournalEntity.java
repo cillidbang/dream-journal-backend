@@ -1,6 +1,7 @@
-package app.journalEntrys.entity;
+package app.journal;
 
 
+import app.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
