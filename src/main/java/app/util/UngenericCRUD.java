@@ -1,18 +1,15 @@
 package app.util;
 
 
-import app.Image.ImageEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 @ApplicationScoped
@@ -43,10 +40,10 @@ public class UngenericCRUD {
     }
 
     @Transactional
-    public List<ImageEntity> findImageByJournalId(Long id) {
-        return Collections.singletonList((ImageEntity) em.createQuery("SELECT c FROM ImageEntity c WHERE c.journalId = :id")
+    public List getImagesForJournalId(Long id) {
+        return em.createQuery("SELECT c.fileBase64 FROM ImageEntity c WHERE c.journalId = :id")
                 .setParameter("id", id)
-                .getResultList());
+                .getResultList();
     }
 
     @Transactional

@@ -1,17 +1,62 @@
 package app.ai;
 
+import app.dto.Dto;
+import app.journal.JournalEntity;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+
 
 public class OpenAIService {
 
-    HttpClient client;
-    String API_TOKEN;
-    String API_URL;
-    String API_IMAGE_PATH;
+    static HttpClient client;
+    static String API_TOKEN;
+    static String API_URL;
+    static String API_IMAGE_PATH;
 
+    static {
+        client = HttpClient.newHttpClient();
+        API_TOKEN = "";
+        API_URL = "https://api.openai.com/v1/";
+        API_IMAGE_PATH = "images/generations";
+    }
 
-    public static String getImage() {
-        return "iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=";
+    public static String generateImageForJournal(JournalEntity journal) throws IOException, InterruptedException {
+
+        HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString("""
+                    {
+                    "model": "dall-e-2",
+                    "prompt": "A cute baby sea otter",
+                    "n": 1,
+                    "size": "1024x1024",
+                      "response_format": "b64_json"
+                    }
+                    """);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL + API_IMAGE_PATH))
+                .POST(body)
+                .header("Authorization", API_TOKEN)
+                .build();
+
+        HttpResponse<String> responseCompletableFuture = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Dto.OpenAIResponse response = mapper.readValue(responseCompletableFuture.body(), Dto.OpenAIResponse.class);
+
+        List<Dto.Base64String> base64Strings = response.data();
+
+        return base64Strings.getFirst().b64_json();
+    }
+
+    public static String generateImage(JournalEntity journal) throws IOException, InterruptedException {
+        return generateImageForJournal(journal);
     }
 
 

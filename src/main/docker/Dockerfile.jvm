@@ -1,5 +1,5 @@
 ## Baseimage for the Build-Stage
-FROM openjdk:17
+FROM eclipse-temurin:21
 
 ## Conterxt wurder im der Composefile auf rootfolder gesetzt.
 ## Kopiere alles in den Container
