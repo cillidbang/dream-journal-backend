@@ -15,12 +15,12 @@ public class ImageControl {
     @Inject
     UngenericCRUD crud;
 
-    public List getImage(Long journalId) {
+    public List getAllImagesForJournalId(Long journalId) {
         return crud.getImagesForJournalId(journalId);
     }
 
 
-    public Optional<ImageEntity> persistImageEntity(String base64String, Long jorunalId) throws IOException {
+    public Optional<ImageEntity> persistImageBase64String(String base64String, Long jorunalId) throws IOException {
         String fileName = "image_%s.%s".formatted(LocalDateTime.now().toLocalTime().getNano(), jorunalId);
         ImageEntity imageEntity = new ImageEntity(fileName, base64String, jorunalId);
         crud.create(imageEntity);

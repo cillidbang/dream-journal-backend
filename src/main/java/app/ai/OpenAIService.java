@@ -1,6 +1,6 @@
 package app.ai;
 
-import app.dto.Dto;
+import app.dto.RecordCollection;
 import app.journal.JournalEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -10,6 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Objects;
 
 
 public class OpenAIService {
@@ -26,14 +27,18 @@ public class OpenAIService {
         API_IMAGE_PATH = "images/generations";
     }
 
-    public static String generateImageForJournal(JournalEntity journal) throws IOException, InterruptedException {
+    public static List<RecordCollection.Base64String> generateImageForJournal(JournalEntity journal) throws IOException, InterruptedException {
+        if (Objects.equals(API_TOKEN, "")) {
+            System.out.println("API-TOKEN is empty");
+            return List.of();
+        }
 
         HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString("""
                     {
                     "model": "dall-e-2",
                     "prompt": "A cute baby sea otter",
                     "n": 1,
-                    "size": "1024x1024",
+                    "size": "512x512",
                       "response_format": "b64_json"
                     }
                     """);
@@ -48,15 +53,10 @@ public class OpenAIService {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        Dto.OpenAIResponse response = mapper.readValue(responseCompletableFuture.body(), Dto.OpenAIResponse.class);
+        RecordCollection.OpenAIResponse response = mapper.readValue(responseCompletableFuture.body(), RecordCollection.OpenAIResponse.class);
 
-        List<Dto.Base64String> base64Strings = response.data();
+        return response.data();
 
-        return base64Strings.getFirst().b64_json();
-    }
-
-    public static String generateImage(JournalEntity journal) throws IOException, InterruptedException {
-        return generateImageForJournal(journal);
     }
 
 

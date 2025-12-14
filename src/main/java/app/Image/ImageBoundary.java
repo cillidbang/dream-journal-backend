@@ -1,6 +1,7 @@
 package app.Image;
 
 import app.ai.OpenAIService;
+import app.dto.RecordCollection;
 import app.journal.JournalEntity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -20,12 +21,12 @@ public class ImageBoundary {
 
     @Produces(MediaType.TEXT_PLAIN)
     @POST
-    public Response generateImage(JournalEntity entity) throws IOException, InterruptedException {
-        String base64DataString = "data:image/png;base64, %s".formatted(OpenAIService.generateImage(entity));
+    public Response generateImage(JournalEntity journal) throws IOException, InterruptedException {
+        List<RecordCollection.Base64String> base64DataArray = OpenAIService.generateImageForJournal(journal);
 
-        //save image in database for journal
-        control.persistImageEntity(base64DataString, entity.id);
-
+        for (RecordCollection.Base64String base64Data : base64DataArray) {
+            control.persistImageBase64String(base64Data.b64_json(), journal.id);
+        }
         return Response.ok("Image Generated Successfully").build();
     }
 
@@ -33,6 +34,6 @@ public class ImageBoundary {
     @Path("/{id}")
     public Response getAllImages(@PathParam("id") Long id) {
         record Out(List images) {}
-        return Response.ok(new Out(control.getImage(id))).build();
+        return Response.ok(new Out(control.getAllImagesForJournalId(id))).build();
     }
 }
