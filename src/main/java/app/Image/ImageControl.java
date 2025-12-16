@@ -19,7 +19,6 @@ public class ImageControl {
         return crud.getImagesForJournalId(journalId);
     }
 
-
     public Optional<ImageEntity> persistImageBase64String(String base64String, Long jorunalId) throws IOException {
         String fileName = "image_%s.%s".formatted(LocalDateTime.now().toLocalTime().getNano(), jorunalId);
         ImageEntity imageEntity = new ImageEntity(fileName, base64String, jorunalId);

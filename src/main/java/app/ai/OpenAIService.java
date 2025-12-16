@@ -10,7 +10,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Objects;
 
 
 public class OpenAIService {
@@ -28,20 +27,25 @@ public class OpenAIService {
     }
 
     public static List<RecordCollection.Base64String> generateImageForJournal(JournalEntity journal) throws IOException, InterruptedException {
-        if (Objects.equals(API_TOKEN, "")) {
-            System.out.println("API-TOKEN is empty");
-            return List.of();
-        }
+
+        String prompt = """ 
+                Aufgabe: Du generiest ein Bild auf Basis meiner Traumbeschreibung, stilistisch im 'TraumStyle'. 
+                Traumüberschrift: %s
+                Traumbeschreibung: %s
+                """.formatted(journal.title, journal.content);
+
+        //replace newlines for valid json.
+        prompt = prompt.replaceAll("\\n", "");
 
         HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString("""
                     {
                     "model": "dall-e-2",
-                    "prompt": "A cute baby sea otter",
+                    "prompt": "%s",
                     "n": 1,
                     "size": "512x512",
                       "response_format": "b64_json"
                     }
-                    """);
+                    """.formatted(prompt));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + API_IMAGE_PATH))

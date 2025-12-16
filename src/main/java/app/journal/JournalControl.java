@@ -30,14 +30,6 @@ public class JournalControl {
 
     public Response createEntry(JournalEntity journalEntity) throws IOException {
         crud.create(journalEntity);
-
-        /*Optional<String> string = "https://images.pexels.com/photos/34176344/pexels-photo-34176344.jpeg?cs=srgb&dl=pexels-abdullahi-santuraki-615175419-34176344.jpg&fm=jpg\"".describeConstable();
-        Optional<ImageEntity> entityOfAlreadySavedImage = downloadImageToContainerAndGetEntity(string, journalEntity.id);*/
-
-        /*if (entityOfAlreadySavedImage.isPresent()) {
-            ImageEntity savedEntity = crud.create(entityOfAlreadySavedImage.get());
-            return Response.ok(savedEntity).build();
-        }*/
         return Response.status(500, "image saving failed").build();
     }
 

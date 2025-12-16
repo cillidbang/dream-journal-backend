@@ -52,7 +52,6 @@ public class UngenericCRUD {
         return newEntity;
     }
 
-
     @Transactional
     public <T> void delete(T entity) {
         em.remove(entity);
