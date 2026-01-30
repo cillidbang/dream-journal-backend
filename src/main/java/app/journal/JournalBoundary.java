@@ -21,7 +21,9 @@ public class JournalBoundary {
     }
 
     @POST
-    public Response create(JournalEntity journalEntity) throws IOException {return control.createEntry(journalEntity);}
+    public Response create(JournalEntity journalEntity) {
+        return control.createEntry(journalEntity);
+    }
 
     @PUT
     public Response edit(JournalEntity journalEntity) {

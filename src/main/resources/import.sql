@@ -9,17 +9,6 @@ CREATE TABLE journalEntrySummary
 );
 
 
-CREATE TABLE Images
-(
-    id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    file_name varchar(255) NOT NULL,
-    file_base64 TEXT NOT NULL,
-    journal_id INT REFERENCES journalEntrySummary (id)
-);
-
-DROP TABLE Images
-
-
 
 
 

@@ -11,6 +11,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class UngenericCRUD {
@@ -29,21 +30,14 @@ public class UngenericCRUD {
     }
 
     @Transactional
-    public <T> T create(T entity) {
+    public <T> Optional<T> create(T entity) {
         em.persist(entity);
-        return entity;
+        return Optional.of(entity);
     }
 
     @Transactional
     public <T> T findEntityById(Class<T> entityClass, Long id) {
         return em.find(entityClass, id);
-    }
-
-    @Transactional
-    public List getImagesForJournalId(Long id) {
-        return em.createQuery("SELECT c.fileBase64 FROM ImageEntity c WHERE c.journalId = :id")
-                .setParameter("id", id)
-                .getResultList();
     }
 
     @Transactional
